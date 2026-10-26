@@ -1,0 +1,5 @@
+# Config lokal (opsional, uncomment kalau mau sembunyikan kredensial db)
+# config/koneksi.php
+
+.DS_Store
+*.log
