@@ -1,4 +1,5 @@
 <?php
+// Modul Autentikasi - PIC: Dominicus Luis F. Saceira (23083000033)
 require 'config/koneksi.php';
 session_start();
 
