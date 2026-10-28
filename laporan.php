@@ -1,4 +1,5 @@
 <?php
+// Modul Status Produksi dan Laporan - PIC: Iron Djerwi (23083000011)
 require 'config/auth.php';
 wajib_role(['admin']);
 require 'config/koneksi.php';
