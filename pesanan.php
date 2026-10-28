@@ -1,4 +1,5 @@
 <?php
+// Modul Transaksi Pesanan dan Pembayaran - PIC: Imbran Doni Muar (23083000034)
 require 'config/auth.php';
 wajib_role(['admin', 'kasir']);
 require 'config/koneksi.php';
