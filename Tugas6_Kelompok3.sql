@@ -41,6 +41,11 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- =====================================================================
 -- [AI] prompt: "Buat CREATE TABLE users dengan PK, UNIQUE username, dan ENUM
 -- role admin/kasir/produksi sesuai ERD Tugas 5"
+-- Penjelasan PIC (Luis):
+-- 1. username dibuat UNIQUE supaya tidak ada dua akun dengan username sama, jadi login selalu menunjuk ke satu pengguna.
+-- 2. password bertipe VARCHAR(255) karena yang disimpan adalah hash dari password_hash() PHP (bcrypt, 60 karakter), bukan password asli. Panjang 255 agar tetap muat bila algoritma bawaan PHP berubah.
+-- 3. role memakai ENUM('admin','kasir','produksi') agar hanya tiga peran itu yang bisa tersimpan. Hak akses halaman dicek dari kolom ini.
+-- 4. users adalah induk bagi pesanan lewat kolom id_user (kasir yang mencatat pesanan). FK-nya RESTRICT, jadi user yang sudah punya pesanan tidak bisa dihapus.
 CREATE TABLE users (
     id_user   INT AUTO_INCREMENT,
     nama      VARCHAR(100) NOT NULL,
