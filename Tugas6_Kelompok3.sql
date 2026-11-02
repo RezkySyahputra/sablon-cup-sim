@@ -215,6 +215,12 @@ DELIMITER ;
 -- =====================================================================
 -- [AI] prompt: "Buat CREATE TABLE pembayaran dengan FK ke pesanan, jenis ENUM
 -- dp/pelunasan, jumlah_bayar harus lebih dari 0"
+-- Penjelasan PIC (Iron):
+-- 1. pembayaran mencatat setiap pembayaran untuk sebuah pesanan, jadi satu pesanan bisa punya beberapa pembayaran (misalnya DP lalu pelunasan).
+-- 2. id_pesanan adalah FK dengan ON DELETE RESTRICT: pesanan yang sudah punya riwayat pembayaran tidak bisa dihapus, supaya catatan keuangan tidak hilang.
+-- 3. jenis memakai ENUM('dp','pelunasan') sehingga hanya dua jenis pembayaran itu yang bisa tersimpan.
+-- 4. jumlah_bayar dibatasi CHECK (jumlah_bayar > 0) agar tidak ada pembayaran bernilai nol atau negatif.
+-- [AI] prompt: "Buatkan penjelasan singkat blok tabel pembayaran untuk komentar di skrip SQL Tugas 6"
 CREATE TABLE pembayaran (
     id_bayar     INT AUTO_INCREMENT,
     id_pesanan   INT  NOT NULL,
@@ -245,6 +251,11 @@ INSERT INTO pembayaran (id_pesanan, jumlah_bayar, jenis, tgl_bayar) VALUES
 -- =====================================================================
 -- [AI] prompt: "Buat view laporan pendapatan harian dari tabel pembayaran dan
 -- view omzet per produk dari detail_pesanan"
+-- Penjelasan PIC (Iron):
+-- 1. v_pendapatan_harian menjumlahkan pembayaran per tanggal bayar (jumlah transaksi dan total pendapatan) sebagai sumber laporan pendapatan harian.
+-- 2. v_omzet_produk menggabungkan detail_pesanan dan produk lewat JOIN, lalu menjumlahkan qty dan subtotal per produk untuk laporan omzet per produk.
+-- 3. View tidak menyimpan data sendiri, hanya menampilkan hasil query, jadi isinya selalu mengikuti data tabel terbaru.
+-- [AI] prompt: "Buatkan penjelasan singkat dua view laporan untuk komentar di skrip SQL Tugas 6"
 CREATE VIEW v_pendapatan_harian AS
 SELECT tgl_bayar, COUNT(*) AS jumlah_transaksi, SUM(jumlah_bayar) AS total_pendapatan
 FROM pembayaran
