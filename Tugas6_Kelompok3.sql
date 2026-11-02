@@ -71,6 +71,11 @@ INSERT INTO users (nama, username, password, role) VALUES
 -- Modul : Data Master Pelanggan dan Produk
 -- =====================================================================
 -- [AI] prompt: "Buat CREATE TABLE pelanggan dengan PK dan nama NOT NULL"
+-- Penjelasan PIC (Rezky):
+-- 1. pelanggan adalah tabel induk yang menyimpan data pemesan (nama dan nomor HP), dengan id_pelanggan sebagai primary key AUTO_INCREMENT.
+-- 2. nama dibuat NOT NULL karena setiap pesanan harus jelas milik siapa, sedangkan no_hp boleh kosong.
+-- 3. pelanggan dipakai oleh tabel pesanan lewat FK RESTRICT, jadi pelanggan yang sudah punya pesanan tidak bisa dihapus.
+-- [AI] prompt: "Buatkan penjelasan singkat blok tabel pelanggan untuk komentar di skrip SQL Tugas 6"
 CREATE TABLE pelanggan (
     id_pelanggan INT AUTO_INCREMENT,
     nama         VARCHAR(100) NOT NULL,
@@ -94,6 +99,11 @@ INSERT INTO pelanggan (nama, no_hp) VALUES
 -- =====================================================================
 -- [AI] prompt: "Buat CREATE TABLE produk dengan PK, harga NOT NULL, dan
 -- CHECK harga tidak boleh negatif"
+-- Penjelasan PIC (Rezky):
+-- 1. produk menyimpan daftar barang yang disablon (jenis cup dan harga satuan per pcs), dengan id_produk sebagai primary key AUTO_INCREMENT.
+-- 2. harga NOT NULL dengan default 0 dan dibatasi CHECK (harga >= 0) agar tidak ada harga negatif.
+-- 3. produk dipakai oleh detail_pesanan lewat FK RESTRICT, jadi produk yang sudah pernah dipesan tidak bisa dihapus, dan trigger subtotal membaca harga dari tabel ini.
+-- [AI] prompt: "Buatkan penjelasan singkat blok tabel produk untuk komentar di skrip SQL Tugas 6"
 CREATE TABLE produk (
     id_produk   INT AUTO_INCREMENT,
     nama_produk VARCHAR(100) NOT NULL,
