@@ -11,7 +11,7 @@
 --   pesanan, detail_pesanan  -> Imbran Doni Muar             (23083000034)
 --   pembayaran, view laporan -> Iron Djerwi                  (23083000011)
 -- =====================================================================
--- [AI] prompt: "Oke lanjut tugas 6" - berdasarkan instruksi Classroom Tugas 6
+-- [AI] prompt: "tugas 6" - berdasarkan instruksi Classroom Tugas 6
 -- dan schema.sql dari Tugas 4. Seluruh skrip ini disusun dengan bantuan AI,
 -- lalu direviu dan dijalankan oleh anggota pemilik tiap blok tabel.
 -- =====================================================================
@@ -120,6 +120,12 @@ INSERT INTO produk (nama_produk, jenis, harga) VALUES
 -- =====================================================================
 -- [AI] prompt: "Buat CREATE TABLE pesanan dengan FK ke pelanggan dan users,
 -- status_produksi ENUM bertahap, dan total_harga tidak boleh negatif"
+-- Penjelasan PIC (Imbran):
+-- 1. pesanan menyimpan satu transaksi per baris: pelanggannya (id_pelanggan), kasir yang mencatat (id_user), tanggal pesan, status produksi, dan total harga.
+-- 2. id_pelanggan dan id_user adalah FK dengan ON DELETE RESTRICT, jadi pelanggan atau kasir yang sudah punya pesanan tidak bisa dihapus.
+-- 3. status_produksi memakai ENUM bertahap antre, cetak, finishing, selesai dengan default antre, sesuai alur pengerjaan di modul produksi.
+-- 4. total_harga dibatasi CHECK (total_harga >= 0) agar tidak bisa bernilai negatif.
+-- [AI] prompt: "Buatkan penjelasan singkat blok tabel pesanan untuk komentar di skrip SQL Tugas 6"
 CREATE TABLE pesanan (
     id_pesanan      INT AUTO_INCREMENT,
     id_pelanggan    INT  NOT NULL,
@@ -153,6 +159,11 @@ INSERT INTO pesanan (id_pelanggan, id_user, tgl_pesan, status_produksi, total_ha
 -- [AI] prompt: "Buat CREATE TABLE detail_pesanan; baris detail ikut terhapus
 -- bila pesanan dihapus (ON DELETE CASCADE), produk yang sudah dipesan tidak
 -- boleh dihapus (RESTRICT), qty harus lebih dari 0"
+-- Penjelasan PIC (Imbran):
+-- 1. detail_pesanan menyimpan item per pesanan, jadi satu pesanan bisa berisi banyak produk (relasi 1 ke banyak dari pesanan).
+-- 2. id_pesanan memakai ON DELETE CASCADE: kalau pesanan dihapus, semua baris detailnya ikut terhapus supaya tidak ada detail yatim.
+-- 3. id_produk memakai ON DELETE RESTRICT: produk yang sudah pernah dipesan tidak bisa dihapus, sehingga riwayat pesanan tetap utuh.
+-- 4. qty dibatasi CHECK (qty > 0) dan subtotal CHECK (subtotal >= 0) agar tidak ada jumlah nol atau negatif.
 CREATE TABLE detail_pesanan (
     id_detail  INT AUTO_INCREMENT,
     id_pesanan INT NOT NULL,
@@ -184,6 +195,8 @@ INSERT INTO detail_pesanan (id_pesanan, id_produk, qty, subtotal) VALUES
 -- (Di phpMyAdmin: blok DELIMITER ini bisa dijalankan langsung lewat tab Import.)
 -- [AI] prompt: "Buat trigger BEFORE INSERT pada detail_pesanan yang mengisi
 -- subtotal dari qty dikali harga di tabel produk"
+-- Penjelasan PIC (Imbran):
+-- Trigger ini berjalan sebelum baris detail_pesanan disimpan. Nilai subtotal dihitung ulang dari qty dikali harga produk, jadi nilai subtotal yang dikirim dari luar (benar atau salah) selalu diganti dengan hasil hitungan yang konsisten.
 DELIMITER $$
 CREATE TRIGGER trg_detail_pesanan_bi
 BEFORE INSERT ON detail_pesanan
