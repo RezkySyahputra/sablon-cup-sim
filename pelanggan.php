@@ -1,4 +1,5 @@
 <?php
+// [AI] prompt: "Buatkan halaman kelola data pelanggan (tambah, tampil, hapus) PHP native dengan PDO prepared statement dan validasi input"
 // Modul Data Master Pelanggan dan Produk - PIC: Muh Rezky Syahputra (23083000023)
 require 'config/auth.php';
 wajib_role(['admin', 'kasir']);
